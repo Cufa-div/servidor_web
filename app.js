@@ -1,5 +1,6 @@
 const express = require(`express`)
 const app = express();
+app.use(express.json())
 
 
 app.get(`/`, (req,res) =>{
@@ -14,6 +15,12 @@ app.get (`/productos/:id`, (req,res) =>{
     res.send(`informacion del producto con ID ${prodcutoID}`);
 })
 
+
+app.post(`/productos`, (req,res) =>{
+const producto = req.body;
+
+res.send(`Guardar nuevo producto ${JSON.stringify(producto)}`)
+})
 
 app.post (`/productos`, (req,res) =>{
     res.send("Producto creado satisfactoriamente.")
