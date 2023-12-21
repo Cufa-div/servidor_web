@@ -1,33 +1,30 @@
 const express = require(`express`)
 const app = express();
+
 app.use(express.json())
 
+let productos = [
+    { id: 1, nombre: "Producto 1", precio: 19.99 },
+    { id: 2, nombre: "Producto 2", precio: 19.99 },
+    { id: 3, nombre: "Producto 3", precio: 5.99 },
+]
 
-app.get(`/`, (req,res) =>{
-    res.send(`¡Hola Mundo!`)
-})
-app.get("/productos", (req,res) =>{
-    const categoria = req.query.categoria;
-    res.send(`Realizar búsqueda de productos en la categoria "${categoria}"`)
-})
-app.get (`/productos/:id`, (req,res) =>{
-    const prodcutoID = req.params.id;
-    res.send(`informacion del producto con ID ${prodcutoID}`);
+
+app.get(`/productos`,(req, res) =>{
+    res.json(productos);
 })
 
-
-app.post(`/productos`, (req,res) =>{
-const producto = req.body;
-
-res.send(`Guardar nuevo producto ${JSON.stringify(producto)}`)
+app.get("/productos/:id", (req, res) =>{
+    const id = parseInt(req.params.id);
+    const producto = productos.find((p) => p.id === id);
+    
+    if(!producto){
+        res.status(404).json({error:"Producto no encontrado"});
+    } else {
+        res.json(producto);
+    }
 })
 
-app.post (`/productos`, (req,res) =>{
-    res.send("Producto creado satisfactoriamente.")
-});
-app.put (`/productos`, (req,res) =>{
-    res.send("Producto modificado satisfactoriamente.")
-});
 
 const port = 3000;
 
